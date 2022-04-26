@@ -93,3 +93,15 @@ section .desc {
   margin-bottom: 0;
   padding: .5rem .75rem;
 }
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  /* left justify choice buttons */
+  align-self: flex-start;
+}
+
+.choices button {
+  margin: .25rem;
+}
