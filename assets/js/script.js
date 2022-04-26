@@ -2,22 +2,25 @@ var viewHighscoresLink;
 var sections;
 var current;
 var previous;
+var backButton;
+var startButton;
+var timer;
 
 /**
  * Hide all sections
  */
 function hideAllSections() {
     for (let i = 0; i < sections.length; i++) {
-        hideSection(sections[i]);
+        hide("#" + sections[i]);
     }
 }
 
 /**
- * Hides a section
- * @param {string} section name of section to hide
+ * Hide an element given the selector
+ * @param {string} selector element to hide
  */
-function hideSection(section) {
-    let element = document.querySelector("#" + section);
+function hide(selector) {
+    let element = document.querySelector(selector);
     let classAttr = element.getAttribute("class");
 
     // if class attribute doesn't exist, initialize it to empty string
@@ -33,26 +36,52 @@ function hideSection(section) {
 }
 
 /**
- * Show a section, hide all others
- * @param {string} section name of section to show
+ * Render a section, hide all others
+ * @param {string} section name of section to render
  */
-function showSection(section) {
+function renderSection(section) {
     if (current === section) {
         return;
     }
 
+    // hide everything else
     hideAllSections();
+    // also hide timer if user isn't in the quiz section
+    if (section !== "quiz") {
+        hide(".timer");
+    }
+
     // update the state
     previous = current;
     current = section;
 
-    let element = document.querySelector("#" + section);
+    unhide("#" + section);
+}
+
+/**
+ * Render/unhide any element, given the selector 
+ * @param {string} selector element, classname, or id
+ */
+function unhide(selector) {
+    let element = document.querySelector(selector);
     let classAttr = element.getAttribute("class");
 
     let split = classAttr.split("hidden");
     // remove "hidden" from class
     classAttr = split[0].trim() + " " + split[1].trim();
     element.setAttribute("class", classAttr);
+}
+
+function startQuiz() {
+    renderSection("quiz");
+    unhide(".timer");
+    timer = 30;
+    
+    // set time interval
+
+    // update timer element color when 10 seconds left
+
+    // end quiz if time runs out or no more questions left
 }
 
 /**
@@ -62,21 +91,30 @@ function init() {
 
     // select elements
     viewHighscoresLink =  document.querySelector(".view-highscores");
+    startButton = document.querySelector(".start-button");
     backButton = document.querySelector(".back");
 
     // init quiz state
     current = "start";
     previous = "start"; 
     sections = ["start", "quiz", "done", "highscores"];
+    timer = 0;
 
     // add listeners
     viewHighscoresLink.addEventListener("click", function(event) {
-        showSection("highscores");
+        renderSection("highscores");
     });
 
     backButton.addEventListener("click", function(event) {
-        showSection(previous);
+        // don't allow user to go back to quiz
+        if (previous === "quiz") {
+            renderSection("start");
+        } else {
+            renderSection(previous);
+        }
     });
+
+    startButton.addEventListener("click", startQuiz);
 }
 
 init();
