@@ -10,10 +10,6 @@ var timerEl;
  * Hide all sections
  */
 function hideAllSections() {
-    // for (let i = 0; i < sections.length; i++) {
-    //     hide("#" + sections[i]);
-    // }
-
     sections.forEach(section => {
         hide("#" + section);
     });
@@ -44,11 +40,6 @@ function hide(selector) {
  * @param {string} section name of section to render
  */
 function renderSection(section) {
-
-    if (state === section) {
-        return;
-    }
-
     // hide everything else
     hideAllSections();
 
