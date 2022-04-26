@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./assets/css/reset.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <script src="./assets/js/script.js" defer></script>
+  <title>Code Quiz</title>
+</head>
+
+<body>
+  <header>
+    <a href="#">View Highscores</a>
+    <span class="timer">Time: 0</span>
+  </header>
+  <main>
+    <div class="start-quiz">
+      <h1>Coding Quiz Challenge</h1>
+      <p class="start-quiz-desc">
+        Try to answer the following code-related questions with the time limit. Keep in mind that incorrect answers will
+        penalize your score and your time will be reduced by ten seconds!
+      </p>
+      <button>Start Quiz</button>
+    </div>
+    <div class="quiz hidden">
+      <h2 class="question ">Question</h2>
+      <ol class="choices">
+        <li><button>Choice 1</button></li>
+        <li><button>Choice 2</button></li>
+        <li><button>Choice 3</button></li>
+        <li><button>Choice 4</button></li>
+      </ol>
+      <div class="response">
+      </div>
+    </div>
+    <div class="done hidden">
+      <h2>All done!</h2>
+      <p class="final-score hidden"></p>
+      <form class="record-score">
+        <label for="initials">Enter Initials</label>
+        <input type="text" id="initials" name="initials">
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+    <div class="highscores hidden">
+      <h2>Highscores</h2>
+      <ol class="top-scores">
+      </ol>
+      <button class="back">Go Back</button>
+      <button class="clear-scores">Clear Highscores</button>
+    </div>
+  </main>
+</body>
+
+</html>
