@@ -69,6 +69,7 @@ section {
   /* on mobile set width of section to 100% of body */
   width: 100%;
   max-width: 768px;
+  text-align: center;
 }
 
 section .heading {

@@ -118,12 +118,12 @@ function startQuiz() {
     let timerInterval = setInterval(function () {
         timeLeft--;
 
-        // when time hits zero, show done section, otherwise render time
+        // when time hits zero, show done section
         if (timeLeft === 0) {
             renderSection("done");
         }
 
-        // stop timer interval if not in quiz or timeLeft is zero
+        // stop timer interval if not in quiz or timeLeft is zero, otherwise render time left
         if (state !== "quiz" || timeLeft === 0) {
             clearInterval(timerInterval);
         } else {
