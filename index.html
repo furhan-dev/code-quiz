@@ -13,19 +13,19 @@
 
 <body>
   <header>
-    <a href="#">View Highscores</a>
+    <a href="#" class="view-highscores">View Highscores</a>
     <span class="timer">Time: 0</span>
   </header>
   <main>
-    <div class="start-quiz card">
+    <section id="start">
       <h1 class="heading">Coding Quiz Challenge</h1>
-      <p class="start-quiz-desc">
+      <p class="start desc">
         Try to answer the following code-related questions with the time limit. Keep in mind that incorrect answers will
         penalize your score and your time will be reduced by ten seconds!
       </p>
       <button>Start Quiz</button>
-    </div>
-    <div class="quiz card hidden">
+    </section>
+    <section id="quiz" class="hidden">
       <h2 class="question heading">Question</h2>
       <ol class="choices">
         <li><button>Choice 1</button></li>
@@ -35,8 +35,8 @@
       </ol>
       <div class="response">
       </div>
-    </div>
-    <div class="done card hidden">
+    </section>
+    <section id="done" class="hidden">
       <h2 class="heading">All done!</h2>
       <p class="final-score"></p>
       <form class="record-score">
@@ -44,14 +44,14 @@
         <input type="text" id="initials" name="initials">
         <input type="submit" value="Submit">
       </form>
-    </div>
-    <div class="highscores card hidden">
+    </section>
+    <section id="highscores" class="hidden">
       <h2 class="heading">Highscores</h2>
       <ol class="top-scores">
       </ol>
       <button class="back">Go Back</button>
       <button class="clear-scores">Clear Highscores</button>
-    </div>
+    </section>
   </main>
 </body>
 
