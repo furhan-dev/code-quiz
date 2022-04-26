@@ -39,7 +39,7 @@ section {
   flex-wrap: nowrap;
   align-items: center;
   border-radius: .5rem;
-  box-shadow: .5rem .5rem 1.5rem rgba(0, 0, 0, 0.15);
+  box-shadow: .25rem .25rem 1rem rgba(0, 0, 0, 0.15);
   padding: 2rem 2rem 1.25rem 2rem;
   max-width: 768px;
 }
