@@ -37,6 +37,10 @@ function hideSection(section) {
  * @param {string} section name of section to show
  */
 function showSection(section) {
+    if (current === section) {
+        return;
+    }
+
     hideAllSections();
     // update the state
     previous = current;
