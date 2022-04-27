@@ -50,6 +50,10 @@ function renderHighscores() {
 function renderGameover() {
     timerEl.hidden = true;
     renderSection("gameover");
+    // add time bonus if they finished with a positive score
+    if (score > 0) {
+        score += timeLeft;
+    }
 }
 
 /**
@@ -73,10 +77,10 @@ function renderTimeLeft() {
 function startQuiz() {
     score = 0;
     timeLeft = 30;
+    questions = getQuestionsList();
     viewHighscoresButtonEl.disabled = false;
     renderSection("quiz");
     renderTimeLeft();
-    initQuestions();
     renderQuestion();
 
     // set time interval
@@ -97,27 +101,68 @@ function startQuiz() {
     }, 1000);
 }
 
+/**
+ * Renders a random question from a list
+ */
 function renderQuestion() {
+    // while more questions exist, keep rendering new questions
     if (questions.length === 0) {
         renderGameover();
+    } else {
+        // get random question
+        let randomIndex = Math.floor(Math.random() * questions.length);
+        let questionObj = questions.splice(randomIndex, 1)[0];
+
+        // update the question text
+        questionEl.innerText = questionObj.question;
+        // set the question index, so we know how to lookup answer later
+        choicesEl.innerHTML = "";
+        choicesEl.setAttribute("data-question-index", questionObj.index)
+
+        questionObj.choices.forEach(choice => {
+            let choiceEl = document.createElement("button");
+            choiceEl.innerText = choice;
+            choiceEl.classList.add("btn", "btn-outline-primary");
+            choicesEl.appendChild(choiceEl);
+        });
     }
+}
 
-    // get random question
-    let randomIndex = Math.floor(Math.random() * questions.length);
-    let questionObj = questions.splice(randomIndex, 1)[0];
+/**
+ * Check user choice, give feedback via color of buttons
+ * @param {object} choice button picked by user
+ */
+async function checkAnswer(choice) {
 
-    // update the question text
-    questionEl.textContent = questionObj.question;
-    // set the question index, so we know how to lookup answer later
-    choicesEl.innerHTML = "";
-    choicesEl.setAttribute("data-question-index", questionObj.index)
+    // get the index of the question, then get the answer from question list
+    let questionIndex = choicesEl.getAttribute("data-question-index");
+    let correctAnswer = getQuestionsList()[questionIndex].answer;
 
-    questionObj.choices.forEach(choice => {
-        let choiceEl = document.createElement("button");
-        choiceEl.innerText = choice;
-        choiceEl.classList.add("btn", "btn-outline-primary");
-        choicesEl.appendChild(choiceEl);
-    });
+
+    disableAllChoices();
+    choice.disabled = false;
+    if (choice.innerText === correctAnswer) {
+        score += 10;
+        choice.classList.replace("btn-secondary", "btn-success");
+    } else {
+        score -= 10;
+        choice.classList.replace("btn-secondary", "btn-danger");
+    }
+    // set async wait so user gets feedback from buttons
+    await new Promise(r => setTimeout(r, 1000));
+    renderQuestion();
+}
+
+/**
+ * Helper to make all choice buttons appear disabled
+ */
+function disableAllChoices() {
+    let allButtons = choicesEl.children;
+    for (var i = 0; i < allButtons.length; i++) {
+        let button = allButtons[i];
+        button.classList.replace("btn-outline-primary", "btn-secondary");
+        allButtons[i].disabled = true;
+    }
 }
 
 /**
@@ -138,15 +183,26 @@ function init() {
     timerEl.hidden = true;
     current = "welcome";
     sections = ["welcome", "quiz", "gameover", "highscores"];
+    questions = getQuestionsList();
 
     // add listeners
     viewHighscoresButtonEl.addEventListener("click", renderHighscores);
     playAgainButtonEl.addEventListener("click", startQuiz);
     startButtonEl.addEventListener("click", startQuiz);
+    choicesEl.addEventListener("click", function(event) {
+        // ignore if target isn't a button
+        if (event.target.nodeName === "BUTTON") {
+            checkAnswer(event.target);
+        }
+    });
 }
 
-function initQuestions() {
-    questions = [
+/**
+ * Get a list of question objects
+ * @returns {Array} list of question objects
+ */
+function getQuestionsList() {
+    return [
         {
             index: 0,
             question: "Who is considered the first computer programmer?",
