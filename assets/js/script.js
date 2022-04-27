@@ -11,28 +11,8 @@ var timerEl;
  */
 function hideAllSections() {
     sections.forEach(section => {
-        hide("#" + section);
+        document.querySelector("#" + section).classList.add("hidden");
     });
-}
-
-/**
- * Hide an element given the selector
- * @param {string} selector element to hide
- */
-function hide(selector) {
-    let element = document.querySelector(selector);
-    let classAttr = element.getAttribute("class");
-
-    // if class attribute doesn't exist, initialize it to empty string
-    if (!classAttr) {
-        classAttr = "";
-    }
-
-    // add hidden to class attribute if it's not already there
-    if (!classAttr.includes("hidden")) {
-        classAttr += " hidden";
-        element.setAttribute("class", classAttr.trim());
-    }
 }
 
 /**
@@ -59,7 +39,7 @@ function renderSection(section) {
     state = section;
 
     // finally unhide the section we want to render
-    unhide("#" + section);
+    document.querySelector("#" + section).classList.remove("hidden");
 }
 
 /**
@@ -67,33 +47,13 @@ function renderSection(section) {
  */
 function renderTimeLeft() {
     if (timeLeft < 10) {
-        timerEl.setAttribute("class", "timer alert alert-danger");
+        timerEl.classList.replace("alert-primary", "alert-danger");
     } else {
-        timerEl.setAttribute("class", "timer alert alert-primary");
+        timerEl.classList.replace("alert-danger", "alert-primary");
     }
     
     timerEl.hidden = false;
     timerEl.textContent = "Timer: " + timeLeft + " seconds";
-}
-
-/**
- * Render/unhide any element, given the selector
- * Removes the 'display: none' style from element
- * @param {string} selector element, classname, or id
- */
-function unhide(selector) {
-    let element = document.querySelector(selector);
-    let classAttr = element.getAttribute("class");
-
-    // only unhide if hidden
-    if (!classAttr.includes("hidden")) {
-        return;
-    }
-
-    let split = classAttr.split("hidden");
-    // remove "hidden" from class
-    classAttr = split[0].trim() + " " + split[1].trim();
-    element.setAttribute("class", classAttr);
 }
 
 /**
