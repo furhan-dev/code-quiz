@@ -216,7 +216,7 @@ function getQuestionsList() {
         },
         {
             index: 1,
-            question: "What was Javascript originally named?",
+            question: "What was JavaScript originally named?",
             choices: [
                 "Mocha",
                 "TypeScript",
@@ -226,13 +226,80 @@ function getQuestionsList() {
         },
         {
             index: 2,
-            question: "When was Javascript invented?",
+            question: "When was JavaScript invented?",
             choices: [
                 "1995",
                 "1989",
-                "1998"
+                "1998",
             ],
             answer: "1995",
+        },
+        {
+            index: 3,
+            question: 'How is the following expression evaluated in JavaScript:\n"2" + "2" - "2"',
+            choices: [
+                '"2"',
+                '"20"',
+                "2",
+                "20",
+            ],
+            answer: "20",
+        },
+        {
+            index: 4,
+            question: 'How is the following expression evaluated in JavaScript:\n"23" === 23',
+            choices: [
+                "true",
+                "false",
+            ],
+            answer: "false",
+        },
+        {
+            index: 5,
+            question: "How is the following expression evaluated in JavaScript:\n.1 + .2 !== .3",
+            choices: [
+                "true",
+                "false",
+            ],
+            answer: "true",
+        },
+        {
+            index: 6,
+            question: "How do you create a function in JavaScript?",
+            choices: [
+                "function foo()",
+                "function:foo()",
+                "function = foo()",
+            ],
+            answer: "function foo()",
+        },
+        {
+            index: 7,
+            question: "JavaScript is the same as Java?",
+            choices: [
+                "true",
+                "false",
+            ],
+            answer: "false",
+        },
+        {
+            index: 8,
+            question: "When declaring a variable what's the difference between the 'let' and 'var' keywords?",
+            choices: [
+                "No difference",
+                "'let' limits the variable scope to block statements, while 'var' doesn't",
+                "let doesn't exist in JavaScript",
+            ],
+            answer: "'let' limits the variable scope to block statements, while 'var' doesn't",
+        },
+        {
+            index: 9,
+            question: "Is JavaScript case-sensitive?",
+            choices: [
+                "Yes",
+                "No",
+            ],
+            answer: "Yes",
         },
     ];
 }
