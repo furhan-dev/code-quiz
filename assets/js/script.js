@@ -1,10 +1,15 @@
 var sections;
 var current;
 var timeLeft;
+var score;
+var questions;
+
 var viewHighscoresButtonEl;
 var playAgainButtonEl;
 var startButtonEl;
 var timerEl;
+var questionEl;
+var choicesEl;
 
 /**
  * Helper function to hide all sections
@@ -66,10 +71,13 @@ function renderTimeLeft() {
  * Starts timer, displays questions, validates answers, keeps score
  */
 function startQuiz() {
+    score = 0;
+    timeLeft = 30;
     viewHighscoresButtonEl.disabled = false;
     renderSection("quiz");
-    timeLeft = 30;
     renderTimeLeft();
+    initQuestions();
+    renderQuestion();
 
     // set time interval
     let timerInterval = setInterval(function () {
@@ -87,11 +95,29 @@ function startQuiz() {
             renderTimeLeft();
         } 
     }, 1000);
+}
 
-    let moreQuestions = false;
-    while (moreQuestions && timeLeft > 0) {
-        // Serve questions
+function renderQuestion() {
+    if (questions.length === 0) {
+        renderGameover();
     }
+
+    // get random question
+    let randomIndex = Math.floor(Math.random() * questions.length);
+    let questionObj = questions.splice(randomIndex, 1)[0];
+
+    // update the question text
+    questionEl.textContent = questionObj.question;
+    // set the question index, so we know how to lookup answer later
+    choicesEl.innerHTML = "";
+    choicesEl.setAttribute("data-question-index", questionObj.index)
+
+    questionObj.choices.forEach(choice => {
+        let choiceEl = document.createElement("button");
+        choiceEl.innerText = choice;
+        choiceEl.classList.add("btn", "btn-outline-primary");
+        choicesEl.appendChild(choiceEl);
+    });
 }
 
 /**
@@ -105,16 +131,54 @@ function init() {
     startButtonEl = document.querySelector(".start-button");
     playAgainButtonEl = document.querySelector(".play-again");
     timerEl = document.querySelector(".timer");
+    questionEl = document.querySelector(".question");
+    choicesEl = document.querySelector(".choices");
+
     // hide timmer in 'welcome' section
     timerEl.hidden = true;
     current = "welcome";
-
     sections = ["welcome", "quiz", "gameover", "highscores"];
 
     // add listeners
     viewHighscoresButtonEl.addEventListener("click", renderHighscores);
     playAgainButtonEl.addEventListener("click", startQuiz);
     startButtonEl.addEventListener("click", startQuiz);
+}
+
+function initQuestions() {
+    questions = [
+        {
+            index: 0,
+            question: "Who is considered the first computer programmer?",
+            choices: [
+                "Ada Lovelace",
+                "Alan Turing",
+                "Bill Gates",
+                "Donald Knuth",
+            ],
+            answer: "Ada Lovelace",
+        },
+        {
+            index: 1,
+            question: "What was Javascript originally named?",
+            choices: [
+                "Mocha",
+                "TypeScript",
+                "ECMAScript",
+            ],
+            answer: "Mocha",
+        },
+        {
+            index: 2,
+            question: "When was Javascript invented?",
+            choices: [
+                "1995",
+                "1989",
+                "1998"
+            ],
+            answer: "1995",
+        },
+    ];
 }
 
 init();
