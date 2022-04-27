@@ -10,6 +10,7 @@ var startButtonEl;
 var timerEl;
 var questionEl;
 var choicesEl;
+// var questionIndex = 0;
 
 /**
  * Helper function to hide all sections
@@ -51,7 +52,7 @@ function renderGameover() {
     timerEl.hidden = true;
     renderSection("gameover");
     // add time bonus if they finished with a positive score
-    if (score > 0) {
+    if (score > 0 && timeLeft >= 0) {
         score += timeLeft;
     }
 }
@@ -67,7 +68,7 @@ function renderTimeLeft() {
     }
     
     timerEl.hidden = false;
-    timerEl.textContent = "Timer: " + timeLeft + " seconds";
+    timerEl.innerText = "Timer: " + timeLeft + " seconds";
 }
 
 /**
@@ -76,7 +77,7 @@ function renderTimeLeft() {
  */
 function startQuiz() {
     score = 0;
-    timeLeft = 30;
+    timeLeft = 60;
     questions = getQuestionsList();
     viewHighscoresButtonEl.disabled = false;
     renderSection("quiz");
@@ -88,12 +89,12 @@ function startQuiz() {
         timeLeft--;
 
         // when time hits zero, show gamover section
-        if (timeLeft === 0) {
+        if (timeLeft <= 0) {
             renderGameover();
         }
 
         // stop timer interval if not in quiz or timeLeft is zero, otherwise render time left
-        if (current !== "quiz" || timeLeft === 0) {
+        if (current !== "quiz" || timeLeft <= 0) {
             clearInterval(timerInterval);
         } else {
             renderTimeLeft();
@@ -105,7 +106,7 @@ function startQuiz() {
  * Renders a random question from a list
  */
 function renderQuestion() {
-    // while more questions exist, keep rendering new questions
+
     if (questions.length === 0) {
         renderGameover();
     } else {
@@ -146,6 +147,7 @@ async function checkAnswer(choice) {
         choice.classList.replace("btn-secondary", "btn-success");
     } else {
         score -= 10;
+        timeLeft -= 10;
         choice.classList.replace("btn-secondary", "btn-danger");
     }
     // set async wait so user gets feedback from buttons
@@ -277,10 +279,10 @@ function getQuestionsList() {
             index: 7,
             question: "JavaScript is the same as Java?",
             choices: [
-                "true",
-                "false",
+                "True",
+                "False",
             ],
-            answer: "false",
+            answer: "False",
         },
         {
             index: 8,
