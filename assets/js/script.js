@@ -1,5 +1,5 @@
 var sections;
-var state;
+var current;
 var timeLeft;
 var viewHighscoresButtonEl;
 var playAgainButtonEl;
@@ -23,8 +23,8 @@ function renderSection(section) {
     // hide everything else
     hideAllSections();
 
-    // update the state
-    state = section;
+    // update the current section 
+    current = section;
 
     // unhide the section we want to render
     document.querySelector("#" + section).classList.remove("hidden");
@@ -81,7 +81,7 @@ function startQuiz() {
         }
 
         // stop timer interval if not in quiz or timeLeft is zero, otherwise render time left
-        if (state !== "quiz" || timeLeft === 0) {
+        if (current !== "quiz" || timeLeft === 0) {
             clearInterval(timerInterval);
         } else {
             renderTimeLeft();
@@ -107,6 +107,7 @@ function init() {
     timerEl = document.querySelector(".timer");
     // hide timmer in 'welcome' section
     timerEl.hidden = true;
+    current = "welcome";
 
     sections = ["welcome", "quiz", "gameover", "highscores"];
 
