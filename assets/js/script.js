@@ -7,7 +7,7 @@ var startButtonEl;
 var timerEl;
 
 /**
- * Hide all sections
+ * Helper function to hide all sections
  */
 function hideAllSections() {
     sections.forEach(section => {
@@ -23,23 +23,28 @@ function renderSection(section) {
     // hide everything else
     hideAllSections();
 
-    // hide timer unless section is quiz
-    if (section !== "quiz") {
-        timerEl.hidden = true;
-    }
-
-    // disable highscores button when section is highscores
-    if (section === "highscores") {
-        viewHighscoresButtonEl.disabled = true;
-    } else {
-        viewHighscoresButtonEl.disabled = false;
-    }
-
     // update the state
     state = section;
 
-    // finally unhide the section we want to render
+    // unhide the section we want to render
     document.querySelector("#" + section).classList.remove("hidden");
+}
+
+/**
+ * Callback function to render highscores
+ */
+function renderHighscores() {
+    viewHighscoresButtonEl.disabled = true;
+    timerEl.hidden = true;
+    renderSection("highscores");
+}
+
+/**
+ * Render the gameover section
+ */
+function renderGameover() {
+    timerEl.hidden = true;
+    renderSection("gameover");
 }
 
 /**
@@ -61,6 +66,7 @@ function renderTimeLeft() {
  * Starts timer, displays questions, validates answers, keeps score
  */
 function startQuiz() {
+    viewHighscoresButtonEl.disabled = false;
     renderSection("quiz");
     timeLeft = 30;
     renderTimeLeft();
@@ -69,9 +75,9 @@ function startQuiz() {
     let timerInterval = setInterval(function () {
         timeLeft--;
 
-        // when time hits zero, show done section
+        // when time hits zero, show gamover section
         if (timeLeft === 0) {
-            renderSection("done");
+            renderGameover();
         }
 
         // stop timer interval if not in quiz or timeLeft is zero, otherwise render time left
@@ -90,6 +96,7 @@ function startQuiz() {
 
 /**
  * Initialize code quiz
+ * By default starts on "welcome" section
  */
 function init() {
 
@@ -98,15 +105,13 @@ function init() {
     startButtonEl = document.querySelector(".start-button");
     playAgainButtonEl = document.querySelector(".play-again");
     timerEl = document.querySelector(".timer");
-    // hide timmer
+    // hide timmer in 'welcome' section
     timerEl.hidden = true;
 
-    sections = ["welcome", "quiz", "done", "highscores"];
+    sections = ["welcome", "quiz", "gameover", "highscores"];
 
     // add listeners
-    viewHighscoresButtonEl.addEventListener("click", function(event) {
-        renderSection("highscores");
-    });
+    viewHighscoresButtonEl.addEventListener("click", renderHighscores);
     playAgainButtonEl.addEventListener("click", startQuiz);
     startButtonEl.addEventListener("click", startQuiz);
 }
