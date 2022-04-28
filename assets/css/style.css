@@ -50,6 +50,10 @@ h4 {
   font-size: 1.25rem;
 }
 
+ul {
+  margin-bottom: 2rem;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -102,4 +106,8 @@ section .desc {
 
 .choices button {
   margin: .25rem;
+}
+
+#gameover form {
+  text-align: left;
 }
