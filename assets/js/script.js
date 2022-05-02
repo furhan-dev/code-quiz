@@ -43,7 +43,9 @@ function init() {
 
     // add listeners
     viewHighscoresButtonEl.addEventListener("click", renderHighscores);
-    playAgainButtonEl.addEventListener("click", startQuiz);
+    playAgainButtonEl.addEventListener("click", function(event) {
+        renderSection("welcome");
+    });
     startButtonEl.addEventListener("click", startQuiz);
     choicesEl.addEventListener("click", function(event) {
         // ignore if target isn't a button

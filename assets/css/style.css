@@ -108,6 +108,10 @@ section .desc {
   margin: .25rem;
 }
 
+.top-scores {
+  text-align: left;
+}
+
 #gameover form {
   text-align: left;
 }
