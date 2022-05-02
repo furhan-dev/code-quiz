@@ -6,4 +6,4 @@ A simple Javascript Coding Quiz that can be found at [Furhan's Code Quiz](https:
 ![Quiz Question](./assets/img/quiz.png?raw=true)
 ![Quiz Correct Response](./assets/img/correct.png?raw=true)
 ![Quiz Incorrect Response](./assets/img/incorrect.png?raw=true)
-![Highscores](./assets/img/highscores?raw=true)
+![Highscores](./assets/img/highscores.png?raw=true)
