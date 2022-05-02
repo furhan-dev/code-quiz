@@ -124,13 +124,13 @@ function renderHighscores() {
     const highscoresListEl = document.querySelector(".top-scores");
     // get highscores from local storage
     let highscores = JSON.parse(localStorage.getItem("highscores"));
-    // sort highscores array by value from high to low
-    highscores.sort((a, b) => b.highscore - a.highscore);
-
     const listItemClasses = ["list-group-item", "d-flex", "justify-content-between", "align-items-start"];
 
     // if highscores exists in local storage, then render
     if (highscores != null) {
+        // sort highscores array by value from high to low
+        highscores.sort((a, b) => b.highscore - a.highscore);
+
         highscoresListEl.innerHTML = "";
         // create a badge and insert only once for a new entry into the top 5
         isBadgeAdded = false;
@@ -319,7 +319,7 @@ function disableAllChoices() {
 
 /**
  * Get a list of question objects
- * @returns {Array} list of question objects
+ * @returns {object} array of question objects
  */
 function getQuestionsList() {
     return [
