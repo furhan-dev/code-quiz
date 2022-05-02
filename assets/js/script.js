@@ -16,6 +16,7 @@ var startButtonEl;
 var timerEl;
 var choicesEl;
 var saveScoreEl;
+var saveScoreNameEl;
 var clearScoresEl;
 
 /**
@@ -31,6 +32,7 @@ function init() {
     timerEl = document.querySelector(".timer");
     choicesEl = document.querySelector(".choices");
     saveScoreEl = document.querySelector(".save-score-button");
+    saveScoreNameEl = document.querySelector(".save-score-name");
     clearScoresEl = document.querySelector(".clear-scores");
 
     // initialize global variables
@@ -55,13 +57,18 @@ function init() {
         // get existing highscores and append new score to it
         let highscores = JSON.parse(localStorage.getItem("highscores"));
 
+        // if highscores doesn't exist, initialize it
         if (highscores == null) {
             highscores = [];
         }
 
+        // get the name from the input field
+        const inputName = saveScoreNameEl.value;
+
+        // add an entry to the highscores array
         highscores.push(
             {
-                name: document.querySelector("#save-score-input").value,
+                name: inputName,
                 highscore: score,
             }
         );
@@ -112,19 +119,54 @@ function renderHighscores() {
     timerEl.hidden = true;
 
     renderSection("highscores");
-    let highscoresListEl = document.querySelector(".top-scores");
+    const highscoresListEl = document.querySelector(".top-scores");
     // get highscores from local storage
     let highscores = JSON.parse(localStorage.getItem("highscores"));
+    // sort highscores array by value from high to low
+    highscores.sort((a, b) => b.highscore - a.highscore);
+
+    const listItemClasses = ["list-group-item", "d-flex", "justify-content-between", "align-items-start"];
 
     // if highscores exists in local storage, then render
     if (highscores != null) {
         highscoresListEl.innerHTML = "";
-        for (let i = 0; i < highscores.length; i++) {
-            let highscoreEl = document.createElement("li");
-            // add bootstrap class to list item
-            highscoreEl.classList.add("list-group-item");
-            highscoreEl.textContent = highscores[i].name + " - " + highscores[i].highscore + " points";
-            highscoresListEl.appendChild(highscoreEl)
+        // create a badge and insert only once for a new entry into the top 5
+        isBadgeAdded = false;
+        const newBadgeEl = document.createElement("span");
+        newBadgeEl.classList.add("badge", "bg-primary", "rounded-pill");
+        newBadgeEl.textContent = "Your Score!";
+        // get the user inputted name to check if it's in top 5
+        const inputName = saveScoreNameEl.value; 
+        // only show up to 5 highscores
+        maxScores = Math.min(highscores.length, 5);
+        for (let i = 0; i < maxScores; i++) {
+            // create elements and add bootstrap classes
+            const listItemEl = document.createElement("li");
+            listItemEl.classList.add(...listItemClasses);
+
+            const innerDivEl = document.createElement("div");
+            innerDivEl.classList.add("ms-2", "me-auto");
+
+            const nameDivEl = document.createElement("div");
+            nameDivEl.classList.add("fw-bold");
+            const name = highscores[i].name;
+            nameDivEl.textContent = name;
+
+            const highscore = highscores[i].highscore;
+            const scoreTextEl = document.createTextNode(highscore + " points");
+
+            innerDivEl.appendChild(nameDivEl);
+            innerDivEl.appendChild(scoreTextEl);
+            listItemEl.appendChild(innerDivEl);
+
+            // check if last quiz entered top 5
+            if (!isBadgeAdded && name === inputName && highscore == score) {
+               listItemEl.appendChild(newBadgeEl);
+               isBadgeAdded = true;
+            }
+            
+            //finally, add list item to highscores ol container
+            highscoresListEl.appendChild(listItemEl);
         }
         // make sure clear scores button is enabled
         clearScoresEl.disabled = false;
@@ -132,6 +174,9 @@ function renderHighscores() {
         // disable clear scores button as there are no scores to clear
         clearScoresEl.disabled = true;
     }
+
+    // clear the name input after we're done
+    saveScoreNameEl.value = "";
 }
 
 /**
