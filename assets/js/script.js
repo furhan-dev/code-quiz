@@ -55,6 +55,14 @@ function init() {
         }
     });
 
+    saveScoreNameEl.addEventListener("input", function(event) {
+        if (saveScoreNameEl.value.length === 0) {
+            saveScoreEl.disabled = true;
+        } else {
+            saveScoreEl.disabled = false;
+        }
+    });
+
     saveScoreEl.addEventListener("click", function(event) {
         event.preventDefault();
         // get existing highscores and append new score to it
@@ -137,7 +145,7 @@ function renderHighscores() {
         isBadgeAdded = false;
         const newBadgeEl = document.createElement("span");
         newBadgeEl.classList.add("badge", "bg-primary", "rounded-pill");
-        newBadgeEl.textContent = "Your Score!";
+        newBadgeEl.textContent = "New!";
         // get the user inputted name to check if it's in top 5
         const inputName = saveScoreNameEl.value; 
         // only show up to 5 highscores
