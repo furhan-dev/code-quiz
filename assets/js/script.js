@@ -8,6 +8,7 @@ var score;
 var questions;
 // keep track of current question object
 var currentQuestionObj;
+var areChoicesReady;
 
 // declare all elements that have listeners
 var viewHighscoresButtonEl;
@@ -49,7 +50,7 @@ function init() {
     startButtonEl.addEventListener("click", startQuiz);
     choicesEl.addEventListener("click", function(event) {
         // ignore if target isn't a button
-        if (event.target.nodeName === "BUTTON") {
+        if (event.target.nodeName === "BUTTON" && areChoicesReady) {
             checkAnswer(event);
         }
     });
@@ -261,6 +262,7 @@ function renderQuestion() {
         // no more questions left to ask, end game
         renderGameover();
     } else {
+        areChoicesReady = true;
         // get random question
         let randomIndex = Math.floor(Math.random() * questions.length);
         // make sure to store current quesiton object to global var to access for validating answer later
@@ -287,6 +289,8 @@ function renderQuestion() {
  */
 function checkAnswer(event) {
 
+    // disable click events for choices
+    areChoicesReady = false;
     // disable every button to give it a greyed out look
     disableAllChoices();
     // enable the user's choice and set it to red or green to give feedback
