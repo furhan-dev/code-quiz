@@ -314,7 +314,7 @@ function checkAnswer(event) {
         event.target.classList.replace("btn-secondary", "btn-danger");
     }
     // wait a second before rendering next question so user can get feedback via button colors
-    setTimeout(renderQuestion, 1000);
+    setTimeout(renderQuestion, 750);
 }
 
 /**
